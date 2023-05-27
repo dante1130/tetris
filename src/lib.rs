@@ -1,6 +1,7 @@
 mod engine;
 mod renderer;
 mod scene;
+pub mod tetris;
 
 use anyhow::Result;
 
