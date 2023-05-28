@@ -13,7 +13,7 @@ pub enum BlockType {
     Z,
 }
 
-pub fn spawn_block() -> Block {
+pub fn spawn_block() -> Box<Block> {
     let mut rng = rand::thread_rng();
     let block_types: [BlockType; 7] = [
         BlockType::I,
@@ -36,8 +36,8 @@ pub fn spawn_block() -> Block {
     }
 }
 
-fn new_i_block() -> Block {
-    Block {
+fn new_i_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(0, 255, 255),
@@ -48,11 +48,11 @@ fn new_i_block() -> Block {
             vec![false, false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_j_block() -> Block {
-    Block {
+fn new_j_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(0, 0, 255),
@@ -62,11 +62,11 @@ fn new_j_block() -> Block {
             vec![false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_l_block() -> Block {
-    Block {
+fn new_l_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(255, 165, 0),
@@ -76,21 +76,21 @@ fn new_l_block() -> Block {
             vec![false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_o_block() -> Block {
-    Block {
+fn new_o_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(255, 255, 0),
         shape: vec![vec![true, true], vec![true, true]],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_s_block() -> Block {
-    Block {
+fn new_s_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(0, 255, 0),
@@ -100,11 +100,11 @@ fn new_s_block() -> Block {
             vec![false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_t_block() -> Block {
-    Block {
+fn new_t_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(128, 0, 128),
@@ -114,11 +114,11 @@ fn new_t_block() -> Block {
             vec![false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }
 
-fn new_z_block() -> Block {
-    Block {
+fn new_z_block() -> Box<Block> {
+    Box::new(Block {
         x: 4,
         y: 0,
         color: Color::RGB(255, 0, 0),
@@ -128,5 +128,5 @@ fn new_z_block() -> Block {
             vec![false, false, false],
         ],
         rotation: Rotation::Deg0,
-    }
+    })
 }

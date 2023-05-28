@@ -28,6 +28,10 @@ impl Renderer {
         self.renderables.push(renderable);
     }
 
+    pub fn clear_renderables(&mut self) {
+        self.renderables.clear();
+    }
+
     pub fn render(&mut self) {
         self.canvas.set_draw_color(self.background);
         self.canvas.clear();

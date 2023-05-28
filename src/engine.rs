@@ -1,13 +1,15 @@
 use anyhow::{anyhow, Result};
-use sdl2::{event::Event, keyboard::Keycode, EventPump, pixels::Color};
+use sdl2::{event::Event, keyboard::Keycode, pixels::Color, EventPump};
 use std::time::Duration;
 
-use crate::renderer::Renderer;
+use crate::{renderer::Renderer, tetris::tetris::Tetris};
 
 pub struct Engine {
     pub renderer: Renderer,
-    running: bool,
     event_pump: EventPump,
+    running: bool,
+
+    tetris: Tetris,
 }
 
 impl Engine {
@@ -32,12 +34,15 @@ impl Engine {
 
         let renderer = Renderer::new(canvas, Color::RGB(0, 0, 0));
 
+        let tetris = Tetris::new();
+
         let running = true;
 
         Ok(Self {
             renderer,
             event_pump,
             running,
+            tetris,
         })
     }
 
@@ -56,14 +61,17 @@ impl Engine {
     fn handle_events(&mut self) {
         for event in self.event_pump.poll_iter() {
             match event {
-                Event::Quit { .. } | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => {
                     self.running = false;
-                },
-                _ => {},
+                }
+                _ => {}
             }
         }
     }
 
     fn update(&mut self) {}
 }
-
