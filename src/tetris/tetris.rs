@@ -7,7 +7,6 @@ pub struct Tetris {
     pub current_block: Box<Block>,
     pub hold_block: Option<Box<Block>>,
     pub blocks_queue: VecDeque<Box<Block>>,
-    pub locked_blocks: Vec<Box<Block>>,
 }
 
 impl Tetris {
