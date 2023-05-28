@@ -1,12 +1,12 @@
-use std::collections::VecDeque;
+use std::{collections::VecDeque, sync::Arc};
 
 use super::{block::Block, blocks::spawn_block};
 
 pub struct Tetris {
     pub board: [[i32; 10]; 22],
-    pub current_block: Box<Block>,
-    pub hold_block: Option<Box<Block>>,
-    pub blocks_queue: VecDeque<Box<Block>>,
+    pub current_block: Arc<Block>,
+    pub hold_block: Option<Arc<Block>>,
+    pub blocks_queue: VecDeque<Arc<Block>>,
 }
 
 impl Tetris {

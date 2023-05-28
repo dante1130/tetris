@@ -1,10 +1,12 @@
+use std::sync::Arc;
+
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
 pub struct Renderer {
     canvas: WindowCanvas,
     background: Color,
-    renderables: Vec<Box<dyn Renderable>>,
+    renderables: Vec<Arc<dyn Renderable>>,
 }
 
 pub trait Renderable {
@@ -24,7 +26,7 @@ impl Renderer {
         self.background = color;
     }
 
-    pub fn add_renderable(&mut self, renderable: Box<dyn Renderable>) {
+    pub fn add_renderable(&mut self, renderable: Arc<dyn Renderable>) {
         self.renderables.push(renderable);
     }
 

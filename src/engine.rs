@@ -73,5 +73,8 @@ impl Engine {
         }
     }
 
-    fn update(&mut self) {}
+    fn update(&mut self) {
+        self.renderer.clear_renderables();
+        self.renderer.add_renderable(self.tetris.current_block.clone());
+    }
 }

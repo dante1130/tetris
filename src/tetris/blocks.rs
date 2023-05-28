@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use super::block::{Shape, Position};
 use crate::tetris::block::Block;
 use rand::Rng;
@@ -13,7 +15,7 @@ pub enum BlockType {
     Z,
 }
 
-pub fn spawn_block() -> Box<Block> {
+pub fn spawn_block() -> Arc<Block> {
     let mut rng = rand::thread_rng();
     let block_types: [BlockType; 7] = [
         BlockType::I,
@@ -36,8 +38,8 @@ pub fn spawn_block() -> Box<Block> {
     }
 }
 
-fn new_i_block() -> Box<Block> {
-    Box::new(Block {
+fn new_i_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(3, 0)],
             anchor: Position(1, 0),
@@ -46,8 +48,8 @@ fn new_i_block() -> Box<Block> {
     })
 }
 
-fn new_j_block() -> Box<Block> {
-    Box::new(Block {
+fn new_j_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(2, 1)],
             anchor: Position(1, 0),
@@ -56,8 +58,8 @@ fn new_j_block() -> Box<Block> {
     })
 }
 
-fn new_l_block() -> Box<Block> {
-    Box::new(Block {
+fn new_l_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(0, 1)],
             anchor: Position(1, 0),
@@ -66,8 +68,8 @@ fn new_l_block() -> Box<Block> {
     })
 }
 
-fn new_o_block() -> Box<Block> {
-    Box::new(Block {
+fn new_o_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(0, 1), Position(1, 1)],
             anchor: Position(0, 0),
@@ -76,8 +78,8 @@ fn new_o_block() -> Box<Block> {
     })
 }
 
-fn new_s_block() -> Box<Block> {
-    Box::new(Block {
+fn new_s_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(1, 1), Position(2, 1)],
             anchor: Position(1, 0),
@@ -86,8 +88,8 @@ fn new_s_block() -> Box<Block> {
     })
 }
 
-fn new_t_block() -> Box<Block> {
-    Box::new(Block {
+fn new_t_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(1, 1)],
             anchor: Position(1, 0),
@@ -96,8 +98,8 @@ fn new_t_block() -> Box<Block> {
     })
 }
 
-fn new_z_block() -> Box<Block> {
-    Box::new(Block {
+fn new_z_block() -> Arc<Block> {
+    Arc::new(Block {
         shape: Shape {
             positions: vec![Position(0, 1), Position(1, 1), Position(1, 0), Position(2, 0)],
             anchor: Position(1, 0),
