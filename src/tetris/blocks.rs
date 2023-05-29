@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use super::block::{Shape, Position};
 use crate::tetris::block::Block;
 use rand::Rng;
@@ -15,7 +13,7 @@ pub enum BlockType {
     Z,
 }
 
-pub fn spawn_block() -> Arc<Block> {
+pub fn spawn_block() -> Block {
     let mut rng = rand::thread_rng();
     let block_types: [BlockType; 7] = [
         BlockType::I,
@@ -38,73 +36,73 @@ pub fn spawn_block() -> Arc<Block> {
     }
 }
 
-fn new_i_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_i_block() -> Block {
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(3, 0)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(0, 255, 255),
-    })
+    }
 }
 
-fn new_j_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_j_block() -> Block {
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(2, 1)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(0, 0, 255),
-    })
+    }
 }
 
-fn new_l_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_l_block() -> Block{
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(0, 1)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(255, 165, 0),
-    })
+    }
 }
 
-fn new_o_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_o_block() -> Block{
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(0, 1), Position(1, 1)],
             anchor: Position(0, 0),
         },
         color: Color::RGB(255, 255, 0),
-    })
+    }
 }
 
-fn new_s_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_s_block() -> Block{
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(1, 1), Position(2, 1)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(0, 255, 0),
-    })
+    }
 }
 
-fn new_t_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_t_block() -> Block{
+    Block {
         shape: Shape {
             positions: vec![Position(0, 0), Position(1, 0), Position(2, 0), Position(1, 1)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(128, 0, 128),
-    })
+    }
 }
 
-fn new_z_block() -> Arc<Block> {
-    Arc::new(Block {
+fn new_z_block() -> Block{
+    Block {
         shape: Shape {
             positions: vec![Position(0, 1), Position(1, 1), Position(1, 0), Position(2, 0)],
             anchor: Position(1, 0),
         },
         color: Color::RGB(255, 0, 0),
-    })
+    }
 }
 

@@ -1,6 +1,7 @@
 use crate::renderer::Renderable;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
+#[derive(Clone)]
 pub struct Position(pub i32, pub i32);
 
 pub struct Shape {
@@ -8,9 +9,39 @@ pub struct Shape {
     pub anchor: Position,
 }
 
+#[derive(Clone)]
 pub struct Block {
     pub shape: Shape,
     pub color: Color,
+}
+
+impl Clone for Shape {
+    fn clone(&self) -> Self {
+        Shape {
+            positions: self.positions.clone(),
+            anchor: self.anchor.clone(),
+        }
+    }
+}
+
+impl Block {
+    pub fn fall(&mut self) {
+        for position in &mut self.shape.positions {
+            position.1 += 1;
+        }
+    }
+
+    pub fn move_left(&mut self) {
+        for position in &mut self.shape.positions {
+            position.0 -= 1;
+        }
+    }
+
+    pub fn move_right(&mut self) {
+        for position in &mut self.shape.positions {
+            position.0 += 1;
+        }
+    }
 }
 
 impl Renderable for Block {

@@ -2,10 +2,10 @@ use anyhow::{anyhow, Result};
 use sdl2::{event::Event, keyboard::Keycode, pixels::Color, EventPump};
 use std::time::Duration;
 
-use crate::{renderer::Renderer, tetris::tetris::Tetris};
+use crate::{renderer::Renderer, tetris::{tetris::Tetris, block::Block}};
 
 pub struct Engine {
-    pub renderer: Renderer,
+    pub renderer: Renderer<Block>,
     event_pump: EventPump,
     running: bool,
 
@@ -50,7 +50,7 @@ impl Engine {
         while self.running {
             self.handle_events();
             self.update();
-            self.renderer.render();
+            self.render();
 
             std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
         }
@@ -74,7 +74,14 @@ impl Engine {
     }
 
     fn update(&mut self) {
+        self.tetris.current_block.fall();
+    }
+
+    fn render(&mut self) {
         self.renderer.clear_renderables();
-        self.renderer.add_renderable(self.tetris.current_block.clone());
+
+        self.renderer.add_renderable(*(self.tetris.current_block).clone());
+
+        self.renderer.render();
     }
 }
