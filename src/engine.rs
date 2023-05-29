@@ -68,13 +68,27 @@ impl Engine {
                 } => {
                     self.running = false;
                 }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::Left),
+                    ..
+                } => {
+                    self.tetris.current_block.move_left();
+                }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::Right),
+                    ..
+                } => {
+                    self.tetris.current_block.move_right();
+                }
                 _ => {}
             }
         }
     }
 
     fn update(&mut self) {
-        self.tetris.current_block.fall();
+        //self.tetris.current_block.fall();
     }
 
     fn render(&mut self) {
