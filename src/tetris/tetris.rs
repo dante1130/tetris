@@ -1,9 +1,9 @@
-use std::{collections::VecDeque};
+use std::collections::VecDeque;
 
-use super::{block::Block, blocks::spawn_block};
+use super::{block::Block, blocks::spawn_block, grid::Grid};
 
 pub struct Tetris {
-    pub board: [[i32; 10]; 22],
+    pub grid: Box<Grid>,
     pub current_block: Box<Block>,
     pub hold_block: Option<Box<Block>>,
     pub blocks_queue: VecDeque<Box<Block>>,
@@ -17,7 +17,7 @@ impl Tetris {
         }
 
         Tetris {
-            board: [[0; 10]; 22],
+            grid: Box::new(Grid::new(10, 20)),
             current_block: blocks_queue.pop_front().unwrap(),
             hold_block: None,
             blocks_queue,

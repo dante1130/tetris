@@ -1,20 +1,17 @@
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
-pub struct Renderer<T: Renderable> {
+pub struct Renderer {
     canvas: WindowCanvas,
     background: Color,
-    renderables: Vec<T>,
+    renderables: Vec<Box<dyn Renderable>>,
 }
 
 pub trait Renderable {
     fn render(&self, canvas: &mut WindowCanvas);
 }
 
-impl<T> Renderer<T>
-where
-    T: Renderable,
-{
+impl Renderer {
     pub fn new(canvas: WindowCanvas, background: Color) -> Self {
         Self {
             canvas,
@@ -27,7 +24,7 @@ where
         self.background = color;
     }
 
-    pub fn add_renderable(&mut self, renderable: T) {
+    pub fn add_renderable(&mut self, renderable: Box<dyn Renderable>) {
         self.renderables.push(renderable);
     }
 
