@@ -1,6 +1,7 @@
 mod engine;
 mod renderer;
 mod tetris;
+mod time;
 
 use anyhow::Result;
 
