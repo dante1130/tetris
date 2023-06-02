@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use sdl2::{event::Event, keyboard::Keycode, pixels::Color, EventPump};
 use std::time::Duration;
 
-use crate::{renderer::Renderer, tetris::tetris::Tetris};
+use crate::{renderer::Renderer, tetris::{tetris::Tetris, block::Position}};
 
 pub struct Engine {
     pub renderer: Renderer,
@@ -34,7 +34,7 @@ impl Engine {
 
         let renderer = Renderer::new(canvas, Color::RGB(0, 0, 0));
 
-        let tetris = Tetris::new();
+        let tetris = Tetris::new(Position(11, 0), Position(8, 0));
 
         let running = true;
 
@@ -47,6 +47,8 @@ impl Engine {
     }
 
     pub fn run(&mut self) -> Result<()> {
+        self.renderer.set_scale(1.5);
+
         while self.running {
             self.handle_events();
             self.update();

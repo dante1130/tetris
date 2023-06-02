@@ -20,6 +20,10 @@ impl Renderer {
         }
     }
 
+    pub fn set_scale(&mut self, scale: f32) {
+        self.canvas.set_scale(scale, scale).unwrap();
+    }
+
     pub fn set_background(&mut self, color: Color) {
         self.background = color;
     }
