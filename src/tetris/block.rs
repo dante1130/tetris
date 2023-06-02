@@ -1,6 +1,8 @@
 use crate::renderer::Renderable;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
+use super::tetris::BLOCK_SIZE;
+
 #[derive(Clone)]
 pub struct Position(pub i32, pub i32);
 
@@ -53,9 +55,9 @@ impl Renderable for Block {
         canvas.set_draw_color(self.color);
 
         for position in self.current_shape().iter() {
-            let x = (self.position.0 + position.0) * 20;
-            let y = (self.position.1 + position.1) * 20;
-            canvas.fill_rect(Rect::new(x, y, 20, 20)).unwrap();
+            let x = (self.position.0 + position.0) * BLOCK_SIZE as i32;
+            let y = (self.position.1 + position.1) * BLOCK_SIZE as i32;
+            canvas.fill_rect(Rect::new(x, y, BLOCK_SIZE, BLOCK_SIZE)).unwrap();
         }
     }
 }

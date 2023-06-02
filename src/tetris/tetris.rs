@@ -6,6 +6,8 @@ use super::{
     grid::Grid,
 };
 
+pub const BLOCK_SIZE: u32 = 20;
+
 pub struct Tetris {
     pub grid: Box<Grid>,
     pub current_block: Box<Block>,

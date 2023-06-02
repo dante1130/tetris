@@ -2,7 +2,7 @@ use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
 use crate::renderer::Renderable;
 
-use super::block::Position;
+use super::{block::Position, tetris::BLOCK_SIZE};
 
 pub struct Grid {
     pub position: Position,
@@ -50,10 +50,10 @@ impl Renderable for Grid {
                     canvas.set_draw_color(*color);
                     canvas
                         .fill_rect(Rect::new(
-                            (x as i32 + self.position.0) * 20,
-                            (y as i32 + self.position.1) * 20,
-                            20,
-                            20,
+                            (x as i32 + self.position.0) * BLOCK_SIZE as i32,
+                            (y as i32 + self.position.1) * BLOCK_SIZE as i32,
+                            BLOCK_SIZE,
+                            BLOCK_SIZE,
                         ))
                         .unwrap();
                 };
@@ -61,10 +61,10 @@ impl Renderable for Grid {
                 canvas.set_draw_color(Color::WHITE);
                 canvas
                     .draw_rect(Rect::new(
-                        (x as i32 + self.position.0) * 20,
-                        (y as i32 + self.position.1) * 20,
-                        20,
-                        20,
+                        (x as i32 + self.position.0) * BLOCK_SIZE as i32,
+                        (y as i32 + self.position.1) * BLOCK_SIZE as i32,
+                        BLOCK_SIZE,
+                        BLOCK_SIZE,
                     ))
                     .unwrap();
             }
