@@ -6,14 +6,14 @@ use super::block::Position;
 
 pub struct Grid {
     pub position: Position,
-    pub cells: Vec<Vec<bool>>,
+    cells: Vec<Vec<Option<Color>>>,
 }
 
 impl Grid {
     pub fn new(position: Position, width: usize, height: usize) -> Grid {
         Grid {
             position,
-            cells: vec![vec![false; width]; height],
+            cells: vec![vec![None; width]; height],
         }
     }
 
@@ -21,9 +21,9 @@ impl Grid {
         let mut cleared_rows = 0;
 
         for i in 0..self.cells.len() {
-            if self.cells[i].iter().all(|&x| x) {
+            if self.cells[i].iter().all(|&color| color != None ) {
                 self.cells.remove(i);
-                self.cells.insert(0, vec![false; self.cells[0].len()]);
+                self.cells.insert(0, vec![None; self.cells[0].len()]);
                 cleared_rows += 1;
             }
         }
@@ -43,10 +43,22 @@ impl Clone for Grid {
 
 impl Renderable for Grid {
     fn render(&self, canvas: &mut WindowCanvas) {
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
 
         for (y, row) in self.cells.iter().enumerate() {
-            for (x, _cell) in row.iter().enumerate() {
+            for (x, color) in row.iter().enumerate() {
+                if let Some(color) = color {
+                    canvas.set_draw_color(*color);
+                    canvas
+                        .fill_rect(Rect::new(
+                            (x as i32 + self.position.0) * 20,
+                            (y as i32 + self.position.1) * 20,
+                            20,
+                            20,
+                        ))
+                        .unwrap();
+                };
+
+                canvas.set_draw_color(Color::WHITE);
                 canvas
                     .draw_rect(Rect::new(
                         (x as i32 + self.position.0) * 20,

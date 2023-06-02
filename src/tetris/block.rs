@@ -1,5 +1,3 @@
-use std::ops::Range;
-
 use crate::renderer::Renderable;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
@@ -25,6 +23,10 @@ impl Clone for Block {
 }
 
 impl Block {
+    pub fn current_shape(&self) -> &Vec<Position> {
+        &self.shapes[self.shape_index]
+    }
+
     pub fn fall(&mut self) {
         self.position.1 += 1;
     }
@@ -50,7 +52,7 @@ impl Renderable for Block {
     fn render(&self, canvas: &mut WindowCanvas) {
         canvas.set_draw_color(self.color);
 
-        for position in self.shapes[self.shape_index].iter() {
+        for position in self.current_shape().iter() {
             let x = (self.position.0 + position.0) * 20;
             let y = (self.position.1 + position.1) * 20;
             canvas.fill_rect(Rect::new(x, y, 20, 20)).unwrap();

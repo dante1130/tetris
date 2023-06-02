@@ -110,6 +110,7 @@ impl Engine {
                 } => {
                     self.tetris.current_block.rotate_counter_clockwise();
                 }
+
                 _ => {}
             }
         }
@@ -120,9 +121,9 @@ impl Engine {
     }
 
     fn fixed_update(&mut self) {
-        while self.engine_time.should_update() {
+        while self.engine_time.is_time_step_passed() {
             self.tetris.current_block.fall();
-            self.engine_time.update();
+            self.engine_time.update_accumulator();
         }
     }
 

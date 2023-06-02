@@ -26,11 +26,11 @@ impl Time {
         self.accumulator += self.delta;
     }
 
-    pub fn should_update(&self) -> bool {
+    pub fn is_time_step_passed(&self) -> bool {
         self.accumulator >= self.time_step
     }
 
-    pub fn update(&mut self) {
+    pub fn update_accumulator(&mut self) {
         self.accumulator -= self.time_step;
     }
 }
