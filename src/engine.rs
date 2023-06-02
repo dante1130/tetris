@@ -76,24 +76,39 @@ impl Engine {
                 }
 
                 Event::KeyDown {
-                    keycode: Some(Keycode::A),
+                    keycode: Some(Keycode::Left),
                     ..
                 } => {
                     self.tetris.current_block.move_left();
                 }
 
                 Event::KeyDown {
-                    keycode: Some(Keycode::D),
+                    keycode: Some(Keycode::Right),
                     ..
                 } => {
                     self.tetris.current_block.move_right();
                 }
 
                 Event::KeyDown {
-                    keycode: Some(Keycode::S),
+                    keycode: Some(Keycode::Down),
                     ..
                 } => {
                     self.tetris.current_block.fall();
+                }
+
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::Z),
+                    ..
+                } => {
+                    self.tetris.current_block.rotate_clockwise();
+                }
+
+                Event::KeyDown {
+                    keycode: Some(Keycode::X),
+                    ..
+                } => {
+                    self.tetris.current_block.rotate_counter_clockwise();
                 }
                 _ => {}
             }

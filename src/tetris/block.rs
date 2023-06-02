@@ -1,59 +1,59 @@
+use std::ops::Range;
+
 use crate::renderer::Renderable;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
 #[derive(Clone)]
 pub struct Position(pub i32, pub i32);
 
-pub struct Shape {
-    pub positions: Vec<Position>,
-    pub anchor: Position,
-}
-
-#[derive(Clone)]
 pub struct Block {
-    pub shape: Shape,
+    pub position: Position,
+    pub shapes: [Vec<Position>; 4],
+    pub shape_index: usize,
     pub color: Color,
 }
 
-impl Clone for Shape {
+impl Clone for Block {
     fn clone(&self) -> Self {
-        Shape {
-            positions: self.positions.clone(),
-            anchor: self.anchor.clone(),
+        Self {
+            position: self.position.clone(),
+            shapes: self.shapes.clone(),
+            shape_index: self.shape_index.clone(),
+            color: self.color.clone(),
         }
     }
 }
 
 impl Block {
     pub fn fall(&mut self) {
-        for position in &mut self.shape.positions {
-            position.1 += 1;
-        }
+        self.position.1 += 1;
     }
 
     pub fn move_left(&mut self) {
-        for position in &mut self.shape.positions {
-            position.0 -= 1;
-        }
+        self.position.0 -= 1;
     }
 
     pub fn move_right(&mut self) {
-        for position in &mut self.shape.positions {
-            position.0 += 1;
-        }
+        self.position.0 += 1;
+    }
+
+    pub fn rotate_clockwise(&mut self) {
+        self.shape_index = (self.shape_index + 1) % 4;
+    }
+
+    pub fn rotate_counter_clockwise(&mut self) {
+        self.shape_index = (self.shape_index + 3) % 4;
     }
 }
 
 impl Renderable for Block {
     fn render(&self, canvas: &mut WindowCanvas) {
-        for position in &self.shape.positions {
-            canvas.set_draw_color(self.color);
-            canvas.fill_rect(Rect::new(
-                position.0 * 20,
-                position.1 * 20,
-                20,
-                20,
-            )).unwrap();
+        canvas.set_draw_color(self.color);
+
+        for position in self.shapes[self.shape_index].iter() {
+            let x = (self.position.0 + position.0) * 20;
+            let y = (self.position.1 + position.1) * 20;
+            canvas.fill_rect(Rect::new(x, y, 20, 20)).unwrap();
         }
     }
 }

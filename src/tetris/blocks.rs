@@ -1,4 +1,4 @@
-use super::block::{Position, Shape};
+use super::block::Position;
 use crate::tetris::block::Block;
 use rand::Rng;
 use sdl2::pixels::Color;
@@ -38,106 +38,252 @@ pub fn spawn_block(x: i32, y: i32) -> Block {
 
 fn new_i_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 0 + y),
-                Position(1 + x, 0 + y),
-                Position(2 + x, 0 + y),
-                Position(3 + x, 0 + y),
-            ],
-            anchor: Position(1, 0),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                    Position(3, 0),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(1, 2),
+                ],
+                vec![
+                    Position(0, 1),
+                    Position(1, 1),
+                    Position(2, 1),
+                    Position(3, 1),
+                ],
+                vec![
+                    Position(2, -1),
+                    Position(2, 0),
+                    Position(2, 1),
+                    Position(2, 2),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(0, 255, 255),
     }
 }
 
 fn new_j_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 0 + y),
-                Position(0 + x, 1 + y),
-                Position(1 + x, 1 + y),
-                Position(2 + x, 1 + y),
-            ],
-            anchor: Position(1, 1),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                    Position(2, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, -1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(0, 1),
+                    Position(1, 1),
+                    Position(2, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(2, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(0, 0, 255),
     }
 }
 
 fn new_l_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 1 + y),
-                Position(1 + x, 1 + y),
-                Position(2 + x, 1 + y),
-                Position(2 + x, 0 + y),
-            ],
-            anchor: Position(1, 1),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                    Position(0, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, 1),
+                ],
+                vec![
+                    Position(0, 1),
+                    Position(1, 1),
+                    Position(2, 1),
+                    Position(2, 0),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(0, -1),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(255, 165, 0),
     }
 }
 
 fn new_o_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 0 + y),
-                Position(1 + x, 0 + y),
-                Position(0 + x, 1 + y),
-                Position(1 + x, 1 + y),
-            ],
-            anchor: Position(0, 0),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(0, 1),
+                    Position(1, 1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(0, 1),
+                    Position(1, 1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(0, 1),
+                    Position(1, 1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(0, 1),
+                    Position(1, 1),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(255, 255, 0),
     }
 }
 
 fn new_s_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 1 + y),
-                Position(1 + x, 1 + y),
-                Position(1 + x, 0 + y),
-                Position(2 + x, 0 + y),
-            ],
-            anchor: Position(1, 1),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(0, 0),
+                    Position(0, 1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(0, 0),
+                    Position(0, 1),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(0, 255, 0),
     }
 }
 
 fn new_t_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 1 + y),
-                Position(1 + x, 1 + y),
-                Position(2 + x, 1 + y),
-                Position(1 + x, 0 + y),
-            ],
-            anchor: Position(1, 1),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                    Position(1, 1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(0, 0),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                    Position(1, -1),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, 0),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(128, 0, 128),
     }
 }
 
 fn new_z_block(x: i32, y: i32) -> Block {
     Block {
-        shape: Shape {
-            positions: vec![
-                Position(0 + x, 0 + y),
-                Position(1 + x, 0 + y),
-                Position(1 + x, 1 + y),
-                Position(2 + x, 1 + y),
-            ],
-            anchor: Position(1, 1),
+        position: Position(x, y),
+        shapes: {
+            [
+                vec![
+                    Position(0, 1),
+                    Position(1, 1),
+                    Position(1, 0),
+                    Position(2, 0),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(0, 0),
+                    Position(0, 1),
+                ],
+                vec![
+                    Position(0, 1),
+                    Position(1, 1),
+                    Position(1, 0),
+                    Position(2, 0),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(0, 0),
+                    Position(0, 1),
+                ],
+            ]
         },
+        shape_index: 0,
         color: Color::RGB(255, 0, 0),
     }
 }
-
