@@ -48,10 +48,10 @@ fn new_i_block(x: i32, y: i32) -> Block {
                     Position(3, 0),
                 ],
                 vec![
-                    Position(1, -1),
-                    Position(1, 0),
-                    Position(1, 1),
-                    Position(1, 2),
+                    Position(2, -1),
+                    Position(2, 0),
+                    Position(2, 1),
+                    Position(2, 2),
                 ],
                 vec![
                     Position(0, 1),
@@ -60,10 +60,10 @@ fn new_i_block(x: i32, y: i32) -> Block {
                     Position(3, 1),
                 ],
                 vec![
-                    Position(2, -1),
-                    Position(2, 0),
-                    Position(2, 1),
-                    Position(2, 2),
+                    Position(1, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(1, 2),
                 ],
             ]
         },
@@ -78,6 +78,18 @@ fn new_j_block(x: i32, y: i32) -> Block {
         shapes: {
             [
                 vec![
+                    Position(0, -1),
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(2, 0),
+                ],
+                vec![
+                    Position(1, -1),
+                    Position(2, -1),
+                    Position(1, 0),
+                    Position(1, 1),
+                ],
+                vec![
                     Position(0, 0),
                     Position(1, 0),
                     Position(2, 0),
@@ -87,19 +99,7 @@ fn new_j_block(x: i32, y: i32) -> Block {
                     Position(1, -1),
                     Position(1, 0),
                     Position(1, 1),
-                    Position(2, -1),
-                ],
-                vec![
-                    Position(0, 0),
                     Position(0, 1),
-                    Position(1, 1),
-                    Position(2, 1),
-                ],
-                vec![
-                    Position(1, -1),
-                    Position(2, -1),
-                    Position(1, 0),
-                    Position(1, 1),
                 ],
             ]
         },
@@ -117,7 +117,7 @@ fn new_l_block(x: i32, y: i32) -> Block {
                     Position(0, 0),
                     Position(1, 0),
                     Position(2, 0),
-                    Position(0, 1),
+                    Position(2, -1),
                 ],
                 vec![
                     Position(1, -1),
@@ -126,16 +126,16 @@ fn new_l_block(x: i32, y: i32) -> Block {
                     Position(2, 1),
                 ],
                 vec![
-                    Position(0, 1),
-                    Position(1, 1),
-                    Position(2, 1),
+                    Position(0, 0),
+                    Position(1, 0),
                     Position(2, 0),
+                    Position(0, 1),
                 ],
                 vec![
+                    Position(0, -1),
                     Position(1, -1),
                     Position(1, 0),
                     Position(1, 1),
-                    Position(0, -1),
                 ],
             ]
         },
@@ -188,26 +188,26 @@ fn new_s_block(x: i32, y: i32) -> Block {
                 vec![
                     Position(0, 0),
                     Position(1, 0),
-                    Position(1, 1),
-                    Position(2, 1),
+                    Position(1, -1),
+                    Position(2, -1),
                 ],
                 vec![
                     Position(1, -1),
                     Position(1, 0),
-                    Position(0, 0),
-                    Position(0, 1),
-                ],
-                vec![
-                    Position(0, 0),
-                    Position(1, 0),
-                    Position(1, 1),
+                    Position(2, 0),
                     Position(2, 1),
                 ],
                 vec![
-                    Position(1, -1),
-                    Position(1, 0),
-                    Position(0, 0),
                     Position(0, 1),
+                    Position(1, 1),
+                    Position(1, 0),
+                    Position(2, 0),
+                ],
+                vec![
+                    Position(0, -1),
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(1, 1),
                 ],
             ]
         },
@@ -258,22 +258,22 @@ fn new_z_block(x: i32, y: i32) -> Block {
         shapes: {
             [
                 vec![
-                    Position(0, 1),
-                    Position(1, 1),
-                    Position(1, 0),
-                    Position(2, 0),
-                ],
-                vec![
+                    Position(0, -1),
                     Position(1, -1),
                     Position(1, 0),
-                    Position(0, 0),
-                    Position(0, 1),
+                    Position(2, 0),
                 ],
                 vec![
-                    Position(0, 1),
-                    Position(1, 1),
-                    Position(1, 0),
+                    Position(2, -1),
                     Position(2, 0),
+                    Position(1, 0),
+                    Position(1, 1),
+                ],
+                vec![
+                    Position(0, 0),
+                    Position(1, 0),
+                    Position(1, 1),
+                    Position(2, 1),
                 ],
                 vec![
                     Position(1, -1),
