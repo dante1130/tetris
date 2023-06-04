@@ -7,6 +7,14 @@ use super::{
     tetris::BLOCK_SIZE,
 };
 
+pub enum Collision {
+    None,
+    Left,
+    Right,
+    Top,
+    Bottom,
+}
+
 pub struct Grid {
     pub position: Position,
     cells: Vec<Vec<Option<Color>>>,
@@ -43,7 +51,36 @@ impl Grid {
         cleared_rows
     }
 
-    pub fn is_colliding_left(&self, block: &Block) -> bool {
+    pub fn is_colliding_locked_blocks(&self, block: &Block) -> Collision {
+        for block_position in block.world_block_positions() {
+            let x = block_position.0 - self.position.0;
+            let y = block_position.1 - self.position.1;
+
+            if x < 0 {
+                return Collision::Left;
+            }
+
+            if x >= self.cells[0].len() as i32 {
+                return Collision::Right;
+            }
+
+            if y < 0 {
+                return Collision::Top;
+            }
+
+            if y >= self.cells.len() as i32 {
+                return Collision::Bottom;
+            }
+
+            if self.cells[y as usize][x as usize] != None {
+                return Collision::Bottom;
+            }
+        }
+
+        Collision::None
+    }
+
+    pub fn is_touching_left(&self, block: &Block) -> bool {
         for x in 0..self.cells.len() {
             let left_wall = self.position.0 + x as i32;
 
@@ -56,7 +93,7 @@ impl Grid {
         false
     }
 
-    pub fn is_colliding_right(&self, block: &Block) -> bool {
+    pub fn is_touching_right(&self, block: &Block) -> bool {
         for _x in 0..self.cells.len() {
             let right_wall = self.position.0 + self.cells[0].len() as i32 - 1;
 
@@ -71,7 +108,7 @@ impl Grid {
 
     pub fn is_colliding_bottom(&self, block: &Block) -> bool {
         for _y in 0..self.cells[0].len() {
-            let bottom_wall = self.position.1 + self.cells.len() as i32 - 1;
+            let bottom_wall = self.position.1 + self.cells.len() as i32;
 
             return block
                 .world_block_positions()

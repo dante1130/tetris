@@ -86,7 +86,7 @@ impl Engine {
                     if !self
                         .tetris
                         .grid
-                        .is_colliding_left(&self.tetris.current_block)
+                        .is_touching_left(&self.tetris.current_block)
                     {
                         self.tetris.current_block.move_left();
                     }
@@ -99,7 +99,7 @@ impl Engine {
                     if !self
                         .tetris
                         .grid
-                        .is_colliding_right(&self.tetris.current_block)
+                        .is_touching_right(&self.tetris.current_block)
                     {
                         self.tetris.current_block.move_right();
                     }
@@ -138,22 +138,12 @@ impl Engine {
     }
 
     fn update(&mut self) {
-        if self.tetris.grid.is_colliding_bottom(&self.tetris.current_block) {
-            self.tetris.grid.lock_block(&self.tetris.current_block);
-            self.tetris.renew_current_block();
-        } 
+        self.tetris.update();
     }
 
     fn fixed_update(&mut self) {
         while self.engine_time.is_time_step_passed() {
-            if !self
-                .tetris
-                .grid
-                .is_colliding_bottom(&self.tetris.current_block)
-            {
-                self.tetris.current_block.soft_drop();
-            }
-
+            self.tetris.fixed_update();
             self.engine_time.update_accumulator();
         }
     }

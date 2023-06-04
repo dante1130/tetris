@@ -40,6 +40,10 @@ impl Block {
         self.position.1 += 1;
     }
 
+    pub fn move_up(&mut self) {
+        self.position.1 -= 1;
+    }
+
     pub fn move_left(&mut self) {
         self.position.0 -= 1;
     }
@@ -49,11 +53,19 @@ impl Block {
     }
 
     pub fn rotate_clockwise(&mut self) {
-        self.shape_index = (self.shape_index + 1) % 4;
+        if self.shape_index == self.shapes.len() - 1 {
+            self.shape_index = 0;
+        } else {
+            self.shape_index += 1;
+        }
     }
 
     pub fn rotate_counter_clockwise(&mut self) {
-        self.shape_index = (self.shape_index + 3) % 4;
+        if self.shape_index == 0 {
+            self.shape_index = self.shapes.len() - 1;
+        } else {
+            self.shape_index -= 1;
+        }
     }
 }
 
