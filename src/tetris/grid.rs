@@ -20,6 +20,15 @@ impl Grid {
         }
     }
 
+    pub fn lock_block(&mut self, block: &Block) {
+        for block_position in block.world_block_positions() {
+            let x = block_position.0 - self.position.0;
+            let y = block_position.1 - self.position.1;
+
+            self.cells[y as usize][x as usize] = Some(block.color);
+        }
+    }
+
     pub fn clear_full_rows(&mut self) -> u32 {
         let mut cleared_rows = 0;
 

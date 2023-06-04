@@ -35,4 +35,13 @@ impl Tetris {
             spawn_position,
         }
     }
+
+    pub fn renew_current_block(&mut self) {
+        self.current_block = self.blocks_queue.pop_front().unwrap();
+        self.blocks_queue
+            .push_back(Box::new(spawn_block(
+                self.spawn_position.0,
+                self.spawn_position.1,
+            )));
+    }
 }

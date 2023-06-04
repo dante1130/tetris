@@ -137,7 +137,12 @@ impl Engine {
         }
     }
 
-    fn update(&mut self) {}
+    fn update(&mut self) {
+        if self.tetris.grid.is_colliding_bottom(&self.tetris.current_block) {
+            self.tetris.grid.lock_block(&self.tetris.current_block);
+            self.tetris.renew_current_block();
+        } 
+    }
 
     fn fixed_update(&mut self) {
         while self.engine_time.is_time_step_passed() {
