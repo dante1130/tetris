@@ -2,7 +2,11 @@ use anyhow::{anyhow, Result};
 use sdl2::{event::Event, keyboard::Keycode, pixels::Color, EventPump};
 use std::time::Duration;
 
-use crate::{renderer::Renderer, tetris::{tetris::Tetris, block::Position}, time::Time};
+use crate::{
+    renderer::Renderer,
+    tetris::{block::Position, tetris::Tetris},
+    time::Time,
+};
 
 pub struct Engine {
     pub renderer: Renderer,
@@ -79,23 +83,40 @@ impl Engine {
                     keycode: Some(Keycode::Left),
                     ..
                 } => {
-                    self.tetris.current_block.move_left();
+                    if !self
+                        .tetris
+                        .grid
+                        .is_colliding_left(&self.tetris.current_block)
+                    {
+                        self.tetris.current_block.move_left();
+                    }
                 }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
                     ..
                 } => {
-                    self.tetris.current_block.move_right();
+                    if !self
+                        .tetris
+                        .grid
+                        .is_colliding_right(&self.tetris.current_block)
+                    {
+                        self.tetris.current_block.move_right();
+                    }
                 }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Down),
                     ..
                 } => {
-                    self.tetris.current_block.fall();
+                    if !self
+                        .tetris
+                        .grid
+                        .is_colliding_bottom(&self.tetris.current_block)
+                    {
+                        self.tetris.current_block.soft_drop();
+                    }
                 }
-
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Z),
@@ -116,13 +137,18 @@ impl Engine {
         }
     }
 
-    fn update(&mut self) {
-
-    }
+    fn update(&mut self) {}
 
     fn fixed_update(&mut self) {
         while self.engine_time.is_time_step_passed() {
-            self.tetris.current_block.fall();
+            if !self
+                .tetris
+                .grid
+                .is_colliding_bottom(&self.tetris.current_block)
+            {
+                self.tetris.current_block.soft_drop();
+            }
+
             self.engine_time.update_accumulator();
         }
     }
@@ -130,7 +156,8 @@ impl Engine {
     fn render(&mut self) {
         self.renderer.clear_renderables();
 
-        self.renderer.add_renderable(self.tetris.current_block.clone());
+        self.renderer
+            .add_renderable(self.tetris.current_block.clone());
         self.renderer.add_renderable(self.tetris.grid.clone());
 
         self.renderer.render();

@@ -2,7 +2,10 @@ use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
 use crate::renderer::Renderable;
 
-use super::{block::Position, tetris::BLOCK_SIZE};
+use super::{
+    block::{Block, Position},
+    tetris::BLOCK_SIZE,
+};
 
 pub struct Grid {
     pub position: Position,
@@ -21,7 +24,7 @@ impl Grid {
         let mut cleared_rows = 0;
 
         for i in 0..self.cells.len() {
-            if self.cells[i].iter().all(|&color| color != None ) {
+            if self.cells[i].iter().all(|&color| color != None) {
                 self.cells.remove(i);
                 self.cells.insert(0, vec![None; self.cells[0].len()]);
                 cleared_rows += 1;
@@ -29,6 +32,45 @@ impl Grid {
         }
 
         cleared_rows
+    }
+
+    pub fn is_colliding_left(&self, block: &Block) -> bool {
+        for x in 0..self.cells.len() {
+            let left_wall = self.position.0 + x as i32;
+
+            return block
+                .world_block_positions()
+                .iter()
+                .any(|position| position.0 == left_wall);
+        }
+
+        false
+    }
+
+    pub fn is_colliding_right(&self, block: &Block) -> bool {
+        for _x in 0..self.cells.len() {
+            let right_wall = self.position.0 + self.cells[0].len() as i32 - 1;
+
+            return block
+                .world_block_positions()
+                .iter()
+                .any(|position| position.0 == right_wall);
+        }
+
+        false
+    }
+
+    pub fn is_colliding_bottom(&self, block: &Block) -> bool {
+        for _y in 0..self.cells[0].len() {
+            let bottom_wall = self.position.1 + self.cells.len() as i32 - 1;
+
+            return block
+                .world_block_positions()
+                .iter()
+                .any(|position| position.1 == bottom_wall);
+        }
+
+        false
     }
 }
 
@@ -43,7 +85,6 @@ impl Clone for Grid {
 
 impl Renderable for Grid {
     fn render(&self, canvas: &mut WindowCanvas) {
-
         for (y, row) in self.cells.iter().enumerate() {
             for (x, color) in row.iter().enumerate() {
                 if let Some(color) = color {

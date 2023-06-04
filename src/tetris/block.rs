@@ -29,7 +29,14 @@ impl Block {
         &self.shapes[self.shape_index]
     }
 
-    pub fn fall(&mut self) {
+    pub fn world_block_positions(&self) -> Vec<Position> {
+        self.current_shape()
+            .iter()
+            .map(|position| Position(self.position.0 + position.0, self.position.1 + position.1))
+            .collect()
+    }
+
+    pub fn soft_drop(&mut self) {
         self.position.1 += 1;
     }
 
@@ -57,7 +64,9 @@ impl Renderable for Block {
         for position in self.current_shape().iter() {
             let x = (self.position.0 + position.0) * BLOCK_SIZE as i32;
             let y = (self.position.1 + position.1) * BLOCK_SIZE as i32;
-            canvas.fill_rect(Rect::new(x, y, BLOCK_SIZE, BLOCK_SIZE)).unwrap();
+            canvas
+                .fill_rect(Rect::new(x, y, BLOCK_SIZE, BLOCK_SIZE))
+                .unwrap();
         }
     }
 }
