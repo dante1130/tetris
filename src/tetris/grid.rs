@@ -51,72 +51,35 @@ impl Grid {
         cleared_rows
     }
 
-    pub fn is_colliding_locked_blocks(&self, block: &Block) -> Collision {
+    pub fn is_colliding(&self, block: &Block) -> Collision {
         for block_position in block.world_block_positions() {
-            let x = block_position.0 - self.position.0;
-            let y = block_position.1 - self.position.1;
+            let diff_block_grid = Position(
+                block_position.0 - self.position.0,
+                block_position.1 - self.position.1,
+            );
 
-            if x < 0 {
+            if diff_block_grid.0 < 0 {
                 return Collision::Left;
             }
 
-            if x >= self.cells[0].len() as i32 {
+            if diff_block_grid.0 >= self.cells[0].len() as i32 {
                 return Collision::Right;
             }
 
-            if y < 0 {
+            if diff_block_grid.1 < 0 {
                 return Collision::Top;
             }
 
-            if y >= self.cells.len() as i32 {
+            if diff_block_grid.1 >= self.cells.len() as i32 {
                 return Collision::Bottom;
             }
 
-            if self.cells[y as usize][x as usize] != None {
+            if self.cells[diff_block_grid.1 as usize][diff_block_grid.0 as usize] != None {
                 return Collision::Bottom;
             }
         }
 
         Collision::None
-    }
-
-    pub fn is_touching_left(&self, block: &Block) -> bool {
-        for x in 0..self.cells.len() {
-            let left_wall = self.position.0 + x as i32;
-
-            return block
-                .world_block_positions()
-                .iter()
-                .any(|position| position.0 == left_wall);
-        }
-
-        false
-    }
-
-    pub fn is_touching_right(&self, block: &Block) -> bool {
-        for _x in 0..self.cells.len() {
-            let right_wall = self.position.0 + self.cells[0].len() as i32 - 1;
-
-            return block
-                .world_block_positions()
-                .iter()
-                .any(|position| position.0 == right_wall);
-        }
-
-        false
-    }
-
-    pub fn is_colliding_bottom(&self, block: &Block) -> bool {
-        for _y in 0..self.cells[0].len() {
-            let bottom_wall = self.position.1 + self.cells.len() as i32;
-
-            return block
-                .world_block_positions()
-                .iter()
-                .any(|position| position.1 == bottom_wall);
-        }
-
-        false
     }
 }
 
@@ -133,12 +96,15 @@ impl Renderable for Grid {
     fn render(&self, canvas: &mut WindowCanvas) {
         for (y, row) in self.cells.iter().enumerate() {
             for (x, color) in row.iter().enumerate() {
+                let cell_position =
+                    Position(x as i32 + self.position.0, y as i32 + self.position.1);
+
                 if let Some(color) = color {
                     canvas.set_draw_color(*color);
                     canvas
                         .fill_rect(Rect::new(
-                            (x as i32 + self.position.0) * BLOCK_SIZE as i32,
-                            (y as i32 + self.position.1) * BLOCK_SIZE as i32,
+                            cell_position.0 * BLOCK_SIZE as i32,
+                            cell_position.1 * BLOCK_SIZE as i32,
                             BLOCK_SIZE,
                             BLOCK_SIZE,
                         ))
@@ -148,8 +114,8 @@ impl Renderable for Grid {
                 canvas.set_draw_color(Color::WHITE);
                 canvas
                     .draw_rect(Rect::new(
-                        (x as i32 + self.position.0) * BLOCK_SIZE as i32,
-                        (y as i32 + self.position.1) * BLOCK_SIZE as i32,
+                        cell_position.0 * BLOCK_SIZE as i32,
+                        cell_position.1 * BLOCK_SIZE as i32,
                         BLOCK_SIZE,
                         BLOCK_SIZE,
                     ))

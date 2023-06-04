@@ -83,39 +83,21 @@ impl Engine {
                     keycode: Some(Keycode::Left),
                     ..
                 } => {
-                    if !self
-                        .tetris
-                        .grid
-                        .is_touching_left(&self.tetris.current_block)
-                    {
-                        self.tetris.current_block.move_left();
-                    }
+                    self.tetris.current_block.move_left();
                 }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
                     ..
                 } => {
-                    if !self
-                        .tetris
-                        .grid
-                        .is_touching_right(&self.tetris.current_block)
-                    {
-                        self.tetris.current_block.move_right();
-                    }
+                    self.tetris.current_block.move_right();
                 }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Down),
                     ..
                 } => {
-                    if !self
-                        .tetris
-                        .grid
-                        .is_colliding_bottom(&self.tetris.current_block)
-                    {
-                        self.tetris.current_block.soft_drop();
-                    }
+                    self.tetris.current_block.soft_drop();
                 }
 
                 Event::KeyDown {

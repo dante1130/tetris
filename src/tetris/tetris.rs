@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use super::{
     block::{Block, Position},
     blocks::spawn_block,
-    grid::{Grid, Collision},
+    grid::{Collision, Grid},
 };
 
 pub const BLOCK_SIZE: u32 = 20;
@@ -37,20 +37,15 @@ impl Tetris {
     }
 
     pub fn update(&mut self) {
-        match self.grid.is_colliding_locked_blocks(&self.current_block) {
+        match self.grid.is_colliding(&self.current_block) {
             Collision::Left => self.current_block.move_right(),
             Collision::Right => self.current_block.move_left(),
-            Collision::Bottom => { 
-                self.current_block.move_up(); 
+            Collision::Bottom => {
+                self.current_block.move_up();
                 self.grid.lock_block(&self.current_block);
                 self.renew_current_block();
-            },
-            Collision::Top | Collision::None => {},
-        }
-
-        if self.grid.is_colliding_bottom(&self.current_block) {
-            self.grid.lock_block(&self.current_block);
-            self.renew_current_block();
+            }
+            _ => {}
         }
 
         self.grid.clear_full_rows();
