@@ -41,7 +41,7 @@ impl Grid {
         let mut cleared_rows = 0;
 
         for i in 0..self.cells.len() {
-            if self.cells[i].iter().all(|&color| color != None) {
+            if self.cells[i].iter().all(|&color| color.is_some()) {
                 self.cells.remove(i);
                 self.cells.insert(0, vec![None; self.cells[0].len()]);
                 cleared_rows += 1;
@@ -71,7 +71,7 @@ impl Grid {
             }
 
             if normalized_grid_pos.1 >= self.cells.len() as i32
-                || self.cells[normalized_grid_pos.1 as usize][normalized_grid_pos.0 as usize] != None
+                || self.cells[normalized_grid_pos.1 as usize][normalized_grid_pos.0 as usize].is_some()
             {
                 return Collision::Bottom;
             }
@@ -98,11 +98,11 @@ impl Grid {
 
             let row = &self.cells[normalized_grid_pos.1 as usize];
 
-            if left_x >= 0 && row[left_x as usize] != None {
+            if left_x >= 0 && row[left_x as usize].is_some() {
                 touching_dir_tuple.0 = true;
             }
 
-            if right_x < row.len() as i32 && row[right_x as usize] != None {
+            if right_x < row.len() as i32 && row[right_x as usize].is_some() {
                 touching_dir_tuple.1 = true;
             }
 
@@ -111,7 +111,7 @@ impl Grid {
             }
         }
 
-        return touching_dir_tuple;
+        touching_dir_tuple
     }
 }
 

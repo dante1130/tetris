@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use crate::{
     renderer::Renderer,
-    tetris::{block::Position, grid::Collision, tetris::Tetris},
+    tetris::{block::Position, tetris::Tetris},
     time::Time,
 };
 

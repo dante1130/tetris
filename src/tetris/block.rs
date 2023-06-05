@@ -18,8 +18,8 @@ impl Clone for Block {
         Self {
             position: self.position.clone(),
             shapes: self.shapes.clone(),
-            shape_index: self.shape_index.clone(),
-            color: self.color.clone(),
+            shape_index: self.shape_index,
+            color: self.color,
         }
     }
 }
