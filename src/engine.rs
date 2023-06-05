@@ -4,7 +4,7 @@ use std::time::Duration;
 
 use crate::{
     renderer::Renderer,
-    tetris::{block::Position, tetris::Tetris},
+    tetris::{block::Position, grid::Collision, tetris::Tetris},
     time::Time,
 };
 
@@ -69,6 +69,11 @@ impl Engine {
     }
 
     fn handle_events(&mut self) {
+        let collision_locked_blocks = self
+            .tetris
+            .grid
+            .is_touching_locked_blocks(&self.tetris.current_block);
+
         for event in self.event_pump.poll_iter() {
             match event {
                 Event::Quit { .. }
@@ -82,16 +87,22 @@ impl Engine {
                 Event::KeyDown {
                     keycode: Some(Keycode::Left),
                     ..
-                } => {
-                    self.tetris.current_block.move_left();
-                }
+                } => match collision_locked_blocks {
+                    Collision::Left => {}
+                    _ => {
+                        self.tetris.current_block.move_left();
+                    }
+                },
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
                     ..
-                } => {
-                    self.tetris.current_block.move_right();
-                }
+                } => match collision_locked_blocks {
+                    Collision::Right => {}
+                    _ => {
+                        self.tetris.current_block.move_right();
+                    }
+                },
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Down),

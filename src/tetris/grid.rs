@@ -70,12 +70,39 @@ impl Grid {
                 return Collision::Top;
             }
 
-            if diff_block_grid.1 >= self.cells.len() as i32 {
+            if diff_block_grid.1 >= self.cells.len() as i32
+                || self.cells[diff_block_grid.1 as usize][diff_block_grid.0 as usize] != None
+            {
                 return Collision::Bottom;
             }
+        }
 
-            if self.cells[diff_block_grid.1 as usize][diff_block_grid.0 as usize] != None {
-                return Collision::Bottom;
+        Collision::None
+    }
+
+    pub fn is_touching_locked_blocks(&self, block: &Block) -> Collision {
+        for block_position in block.world_block_positions() {
+            for (y, row) in self.cells.iter().enumerate() {
+                for (x, cell) in row.iter().enumerate() {
+                    if *cell == None {
+                        continue;
+                    }
+
+                    let cell_position =
+                        Position(x as i32 + self.position.0, y as i32 + self.position.1);
+
+                    if cell_position.1 != block_position.1 {
+                        continue;
+                    }
+
+                    if cell_position.0 + 1 == block_position.0 {
+                        return Collision::Left;
+                    }
+
+                    if cell_position.0 - 1 == block_position.0 {
+                        return Collision::Right;
+                    }
+                }
             }
         }
 
