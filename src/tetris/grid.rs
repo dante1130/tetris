@@ -53,25 +53,25 @@ impl Grid {
 
     pub fn is_colliding(&self, block: &Block) -> Collision {
         for block_position in block.world_block_positions() {
-            let diff_block_grid = Position(
+            let normalized_grid_pos = Position(
                 block_position.0 - self.position.0,
                 block_position.1 - self.position.1,
             );
 
-            if diff_block_grid.0 < 0 {
+            if normalized_grid_pos.0 < 0 {
                 return Collision::Left;
             }
 
-            if diff_block_grid.0 >= self.cells[0].len() as i32 {
+            if normalized_grid_pos.0 >= self.cells[0].len() as i32 {
                 return Collision::Right;
             }
 
-            if diff_block_grid.1 < 0 {
+            if normalized_grid_pos.1 < 0 {
                 return Collision::Top;
             }
 
-            if diff_block_grid.1 >= self.cells.len() as i32
-                || self.cells[diff_block_grid.1 as usize][diff_block_grid.0 as usize] != None
+            if normalized_grid_pos.1 >= self.cells.len() as i32
+                || self.cells[normalized_grid_pos.1 as usize][normalized_grid_pos.0 as usize] != None
             {
                 return Collision::Bottom;
             }
@@ -80,33 +80,38 @@ impl Grid {
         Collision::None
     }
 
-    pub fn is_touching_locked_blocks(&self, block: &Block) -> Collision {
+    pub fn is_touching_locked_blocks(&self, block: &Block) -> (bool, bool) {
+        let mut touching_dir_tuple = (false, false);
+
         for block_position in block.world_block_positions() {
-            for (y, row) in self.cells.iter().enumerate() {
-                for (x, cell) in row.iter().enumerate() {
-                    if *cell == None {
-                        continue;
-                    }
+            let normalized_grid_pos = Position(
+                block_position.0 - self.position.0,
+                block_position.1 - self.position.1,
+            );
 
-                    let cell_position =
-                        Position(x as i32 + self.position.0, y as i32 + self.position.1);
+            if normalized_grid_pos.1 < 0 || normalized_grid_pos.1 >= self.cells.len() as i32 {
+                continue;
+            }
 
-                    if cell_position.1 != block_position.1 {
-                        continue;
-                    }
+            let left_x = normalized_grid_pos.0 - 1;
+            let right_x = normalized_grid_pos.0 + 1;
 
-                    if cell_position.0 + 1 == block_position.0 {
-                        return Collision::Left;
-                    }
+            let row = &self.cells[normalized_grid_pos.1 as usize];
 
-                    if cell_position.0 - 1 == block_position.0 {
-                        return Collision::Right;
-                    }
-                }
+            if left_x >= 0 && row[left_x as usize] != None {
+                touching_dir_tuple.0 = true;
+            }
+
+            if right_x < row.len() as i32 && row[right_x as usize] != None {
+                touching_dir_tuple.1 = true;
+            }
+
+            if touching_dir_tuple.0 && touching_dir_tuple.1 {
+                break;
             }
         }
 
-        Collision::None
+        return touching_dir_tuple;
     }
 }
 

@@ -69,7 +69,7 @@ impl Engine {
     }
 
     fn handle_events(&mut self) {
-        let collision_locked_blocks = self
+        let touching_locked_blocks_dir = self
             .tetris
             .grid
             .is_touching_locked_blocks(&self.tetris.current_block);
@@ -87,9 +87,8 @@ impl Engine {
                 Event::KeyDown {
                     keycode: Some(Keycode::Left),
                     ..
-                } => match collision_locked_blocks {
-                    Collision::Left => {}
-                    _ => {
+                } => {
+                    if !touching_locked_blocks_dir.0 {
                         self.tetris.current_block.move_left();
                     }
                 },
@@ -97,9 +96,8 @@ impl Engine {
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
                     ..
-                } => match collision_locked_blocks {
-                    Collision::Right => {}
-                    _ => {
+                } => {
+                    if !touching_locked_blocks_dir.1 {
                         self.tetris.current_block.move_right();
                     }
                 },
