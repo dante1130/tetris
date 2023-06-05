@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use super::{
     block::{Block, Position},
     blocks::spawn_block,
-    grid::{Collision, Grid},
+    grid::Grid,
 };
 
 pub const BLOCK_SIZE: u32 = 20;
