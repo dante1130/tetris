@@ -4,7 +4,11 @@ use std::time::Duration;
 
 use crate::{
     renderer::Renderer,
-    tetris::{block::Position, tetris::Tetris},
+    tetris::{
+        block::Position,
+        grid::{Collision, LockResult},
+        tetris::Tetris,
+    },
     time::Time,
 };
 
@@ -91,7 +95,7 @@ impl Engine {
                     if !touching_locked_blocks_dir.0 {
                         self.tetris.current_block.move_left();
                     }
-                },
+                }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Right),
@@ -100,7 +104,7 @@ impl Engine {
                     if !touching_locked_blocks_dir.1 {
                         self.tetris.current_block.move_right();
                     }
-                },
+                }
 
                 Event::KeyDown {
                     keycode: Some(Keycode::Down),
@@ -129,12 +133,25 @@ impl Engine {
     }
 
     fn update(&mut self) {
-        self.tetris.update();
+        match self.tetris.grid.is_colliding(&self.tetris.current_block) {
+            Collision::Left => self.tetris.current_block.move_right(),
+            Collision::Right => self.tetris.current_block.move_left(),
+            Collision::Bottom => {
+                self.tetris.current_block.move_up();
+                match self.tetris.grid.lock_block(&self.tetris.current_block) {
+                    LockResult::GameOver => self.running = false,
+                    LockResult::Locked => self.tetris.renew_current_block(),
+                }
+            }
+            _ => {}
+        }
+
+        self.tetris.grid.clear_full_rows();
     }
 
     fn fixed_update(&mut self) {
         while self.engine_time.is_time_step_passed() {
-            self.tetris.fixed_update();
+            self.tetris.current_block.soft_drop();
             self.engine_time.update_accumulator();
         }
     }

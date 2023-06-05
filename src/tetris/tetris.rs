@@ -36,25 +36,6 @@ impl Tetris {
         }
     }
 
-    pub fn update(&mut self) {
-        match self.grid.is_colliding(&self.current_block) {
-            Collision::Left => self.current_block.move_right(),
-            Collision::Right => self.current_block.move_left(),
-            Collision::Bottom => {
-                self.current_block.move_up();
-                self.grid.lock_block(&self.current_block);
-                self.renew_current_block();
-            }
-            _ => {}
-        }
-
-        self.grid.clear_full_rows();
-    }
-
-    pub fn fixed_update(&mut self) {
-        self.current_block.soft_drop();
-    }
-
     pub fn renew_current_block(&mut self) {
         self.current_block = self.blocks_queue.pop_front().unwrap();
         self.blocks_queue.push_back(Box::new(spawn_block(

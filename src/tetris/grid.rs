@@ -15,6 +15,11 @@ pub enum Collision {
     Bottom,
 }
 
+pub enum LockResult {
+    Locked,
+    GameOver,
+}
+
 pub struct Grid {
     pub position: Position,
     cells: Vec<Vec<Option<Color>>>,
@@ -28,13 +33,19 @@ impl Grid {
         }
     }
 
-    pub fn lock_block(&mut self, block: &Block) {
+    pub fn lock_block(&mut self, block: &Block) -> LockResult {
         for block_position in block.world_block_positions() {
             let x = block_position.0 - self.position.0;
             let y = block_position.1 - self.position.1;
 
+            if y < 0 {
+                return LockResult::GameOver;
+            }
+
             self.cells[y as usize][x as usize] = Some(block.color);
         }
+
+        LockResult::Locked
     }
 
     pub fn clear_full_rows(&mut self) -> u32 {
@@ -53,26 +64,22 @@ impl Grid {
 
     pub fn is_colliding(&self, block: &Block) -> Collision {
         for block_position in block.world_block_positions() {
-            let normalized_grid_pos = Position(
-                block_position.0 - self.position.0,
-                block_position.1 - self.position.1,
-            );
+            let x = block_position.0 - self.position.0;
+            let y = block_position.1 - self.position.1;
 
-            if normalized_grid_pos.0 < 0 {
+            if x < 0 {
                 return Collision::Left;
             }
 
-            if normalized_grid_pos.0 >= self.cells[0].len() as i32 {
+            if x >= self.cells[0].len() as i32 {
                 return Collision::Right;
             }
 
-            if normalized_grid_pos.1 < 0 {
+            if y < 0 {
                 return Collision::Top;
             }
 
-            if normalized_grid_pos.1 >= self.cells.len() as i32
-                || self.cells[normalized_grid_pos.1 as usize][normalized_grid_pos.0 as usize].is_some()
-            {
+            if y >= self.cells.len() as i32 || self.cells[y as usize][x as usize].is_some() {
                 return Collision::Bottom;
             }
         }
@@ -84,19 +91,17 @@ impl Grid {
         let mut touching_dir_tuple = (false, false);
 
         for block_position in block.world_block_positions() {
-            let normalized_grid_pos = Position(
-                block_position.0 - self.position.0,
-                block_position.1 - self.position.1,
-            );
+            let x = block_position.0 - self.position.0;
+            let y = block_position.1 - self.position.1;
 
-            if normalized_grid_pos.1 < 0 || normalized_grid_pos.1 >= self.cells.len() as i32 {
+            if y < 0 || y >= self.cells.len() as i32 {
                 continue;
             }
 
-            let left_x = normalized_grid_pos.0 - 1;
-            let right_x = normalized_grid_pos.0 + 1;
+            let left_x = x - 1;
+            let right_x = x + 1;
 
-            let row = &self.cells[normalized_grid_pos.1 as usize];
+            let row = &self.cells[y as usize];
 
             if left_x >= 0 && row[left_x as usize].is_some() {
                 touching_dir_tuple.0 = true;
