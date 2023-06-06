@@ -1,6 +1,6 @@
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
 
-use crate::renderer::Renderable;
+use crate::renderable::Renderable;
 
 use super::{
     block::{Block, Position},

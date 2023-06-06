@@ -9,10 +9,10 @@ use super::{
 pub const BLOCK_SIZE: u32 = 20;
 
 pub struct Tetris {
-    pub grid: Box<Grid>,
-    pub current_block: Box<Block>,
-    pub hold_block: Option<Box<Block>>,
-    pub blocks_queue: VecDeque<Box<Block>>,
+    pub grid: Grid,
+    pub current_block: Block,
+    pub hold_block: Option<Block>,
+    pub blocks_queue: VecDeque<Block>,
     pub spawn_position: Position,
 }
 
@@ -20,15 +20,15 @@ impl Tetris {
     pub fn new(spawn_position: Position, grid_position: Position) -> Tetris {
         let mut blocks_queue = VecDeque::new();
         for _ in 0..5 {
-            blocks_queue.push_back(Box::new(spawn_block(spawn_position.0, spawn_position.1)));
+            blocks_queue.push_back(spawn_block(spawn_position.0, spawn_position.1));
         }
 
         Tetris {
-            grid: Box::new(Grid::new(
+            grid: Grid::new(
                 Position(grid_position.0, grid_position.1),
                 10,
                 20,
-            )),
+            ),
             current_block: blocks_queue.pop_front().unwrap(),
             hold_block: None,
             blocks_queue,
@@ -38,9 +38,9 @@ impl Tetris {
 
     pub fn renew_current_block(&mut self) {
         self.current_block = self.blocks_queue.pop_front().unwrap();
-        self.blocks_queue.push_back(Box::new(spawn_block(
+        self.blocks_queue.push_back(spawn_block(
             self.spawn_position.0,
             self.spawn_position.1,
-        )));
+        ));
     }
 }

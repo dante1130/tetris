@@ -1,5 +1,6 @@
-use crate::renderer::Renderable;
 use sdl2::{pixels::Color, rect::Rect, render::WindowCanvas};
+
+use crate::renderable::Renderable;
 
 use super::tetris::BLOCK_SIZE;
 

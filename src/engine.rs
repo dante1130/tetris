@@ -1,19 +1,18 @@
 use anyhow::{anyhow, Result};
-use sdl2::{event::Event, keyboard::Keycode, pixels::Color, EventPump};
+use sdl2::{event::Event, keyboard::Keycode, EventPump, render::WindowCanvas};
 use std::time::Duration;
 
 use crate::{
-    renderer::Renderer,
     tetris::{
         block::Position,
         grid::{Collision, LockResult},
         tetris::Tetris,
     },
-    time::Time,
+    time::Time, renderable::Renderable,
 };
 
 pub struct Engine {
-    pub renderer: Renderer,
+    pub canvas: WindowCanvas,
     event_pump: EventPump,
     engine_time: Time,
     running: bool,
@@ -41,8 +40,6 @@ impl Engine {
             Err(err) => return Err(anyhow!(err)),
         };
 
-        let renderer = Renderer::new(canvas, Color::RGB(0, 0, 0));
-
         let tetris = Tetris::new(Position(11, 0), Position(8, 0));
 
         let engine_time = Time::new(Duration::from_secs(1));
@@ -50,7 +47,7 @@ impl Engine {
         let running = true;
 
         Ok(Self {
-            renderer,
+            canvas,
             event_pump,
             engine_time,
             running,
@@ -59,7 +56,10 @@ impl Engine {
     }
 
     pub fn run(&mut self) -> Result<()> {
-        self.renderer.set_scale(1.5);
+        match self.canvas.set_scale(1.5, 1.5) {
+            Ok(it) => it,
+            Err(err) => return Err(anyhow!(err)),
+        };
 
         while self.running {
             self.engine_time.tick();
@@ -157,12 +157,11 @@ impl Engine {
     }
 
     fn render(&mut self) {
-        self.renderer.clear_renderables();
+        self.canvas.clear();
 
-        self.renderer
-            .add_renderable(self.tetris.current_block.clone());
-        self.renderer.add_renderable(self.tetris.grid.clone());
+        self.tetris.current_block.render(&mut self.canvas);
+        self.tetris.grid.render(&mut self.canvas);
 
-        self.renderer.render();
+        self.canvas.present();
     }
 }
