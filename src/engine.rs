@@ -1,5 +1,5 @@
 use anyhow::{anyhow, Result};
-use sdl2::{event::Event, keyboard::Keycode, EventPump, render::WindowCanvas};
+use sdl2::{event::Event, keyboard::Keycode, EventPump, render::WindowCanvas, pixels::Color};
 use std::time::Duration;
 
 use crate::{
@@ -157,6 +157,7 @@ impl Engine {
     }
 
     fn render(&mut self) {
+        self.canvas.set_draw_color(Color::BLACK);
         self.canvas.clear();
 
         self.tetris.current_block.render(&mut self.canvas);
